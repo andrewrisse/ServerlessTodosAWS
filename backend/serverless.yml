@@ -40,6 +40,7 @@ provider:
       - kms:Decrypt
     Resource: !GetAtt KMSKey.Arn
 
+
 functions:
 
   Auth:
@@ -72,6 +73,9 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
+          request:
+            schema:
+              application/json: ${file(src/models/TodoItem.json)}
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -87,6 +91,12 @@ functions:
           path: todos/{todoId}
           cors: true
           authorizer: Auth
+          request:
+            parameters:
+              paths:
+                todoId: true
+            schema:
+              application/json: ${file(src/models/TodoUpdate.json)}
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -102,6 +112,10 @@ functions:
           path: todos/{todoId}
           cors: true
           authorizer: Auth
+          request:
+            parameters:
+              paths:
+                todoId: true
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -118,6 +132,10 @@ functions:
           path: todos/{todoId}/attachment
           cors: true
           authorizer: Auth
+          request:
+            parameters:
+              paths:
+                todoId: true
     iamRoleStatements:
       - Effect: Allow
         Action:
